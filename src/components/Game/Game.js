@@ -5,6 +5,7 @@ import { WORDS } from "../../data";
 import GuessInput from "../GuessInput";
 import Guess from "../Guess";
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
+import { checkGuess } from "../../game-helpers";
 
 // Pick a random word on every page load.
 const answer = sample(WORDS);
@@ -18,10 +19,15 @@ function Game() {
 
   const [nbrOfGuesses, setNbrOfGuesses] = React.useState(0);
 
+  console.log("guesses", guesses);
+
   function handleAddGuess(guess) {
     if (nbrOfGuesses >= NUM_OF_GUESSES_ALLOWED) return;
     const nextGuesses = [...guesses];
-    nextGuesses[nbrOfGuesses].label = guess;
+    nextGuesses[nbrOfGuesses] = {
+      id: Math.random(),
+      result: checkGuess(guess, answer),
+    };
     setGuesses(nextGuesses);
     setNbrOfGuesses(nbrOfGuesses + 1);
   }
@@ -30,7 +36,7 @@ function Game() {
     <>
       <div className="guess-results">
         {guesses.map((guess, index) => (
-          <Guess key={index} word={guess.label} />
+          <Guess key={index} guess={guess} />
         ))}
       </div>
       <GuessInput handleAddGuess={handleAddGuess} />
@@ -41,7 +47,7 @@ function Game() {
 function createArrayWithEmptyStrings(length) {
   const array = [];
   for (let i = 0; i < length; i++) {
-    let entry = { id: Math.random(), label: "" };
+    let entry = {};
     array.push(entry);
   }
   return array;

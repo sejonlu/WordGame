@@ -1,13 +1,15 @@
 import React from "react";
 import { range } from "../../utils";
 
-function Guess({ word }) {
+function Guess({ guess }) {
   let template;
 
-  if (word) {
-    template = word.split("").map((c, index) => (
-      <span key={index} className="cell">
-        {c}
+  console.log("guess", guess);
+
+  if (Object.keys(guess).length !== 0) {
+    template = guess.result.map((r, index) => (
+      <span key={index} className={`cell ${r.status}`}>
+        {r.letter}
       </span>
     ));
   } else {
