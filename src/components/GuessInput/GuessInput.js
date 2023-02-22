@@ -1,16 +1,15 @@
 import React from "react";
 
-function GuessInput() {
+function GuessInput({ handleAddGuess }) {
   const [input, setInput] = React.useState("");
 
   function handleSubmit(event) {
     event.preventDefault(); // stop page refresh
 
-    console.log(input);
-
     if (/^[a-zA-Z]{5}$/.test(input) == false) return;
 
-    console.log("Success");
+    handleAddGuess({ id: Math.random(), guess: input });
+    setInput(""); // reset input
   }
 
   return (
