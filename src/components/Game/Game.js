@@ -50,7 +50,7 @@ function Game() {
           <Guess key={index} guess={guess} />
         ))}
       </div>
-      <GuessInput handleAddGuess={handleAddGuess} />
+      <GuessInput handleAddGuess={handleAddGuess} disabled={gameOver} />
       {gameOver && (
         <Banner
           didWin={didWin}
