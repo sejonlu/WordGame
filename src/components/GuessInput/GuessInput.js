@@ -6,7 +6,7 @@ function GuessInput({ handleAddGuess }) {
   function handleSubmit(event) {
     event.preventDefault(); // stop page refresh
 
-    if (/^[a-zA-Z]{5}$/.test(input) == false) return;
+    if (/^[a-zA-Z]{5}$/.test(input) === false) return;
 
     handleAddGuess({ id: Math.random(), guess: input });
     setInput(""); // reset input

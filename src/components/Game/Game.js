@@ -5,7 +5,7 @@ import { WORDS } from "../../data";
 import GuessInput from "../GuessInput";
 import GuessTracker from "../GuessTracker/GuessTracker";
 
-// Pick a random word on every pageload.
+// Pick a random word on every page load.
 const answer = sample(WORDS);
 // To make debugging easier, we'll log the solution in the console.
 console.info({ answer });
@@ -20,8 +20,8 @@ function Game() {
 
   return (
     <>
-      <GuessTracker guesses={guesses}></GuessTracker>
-      <GuessInput handleAddGuess={handleAddGuess}></GuessInput>
+      <GuessTracker guesses={guesses} />
+      <GuessInput handleAddGuess={handleAddGuess} />
     </>
   );
 }
