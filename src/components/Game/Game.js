@@ -3,7 +3,8 @@ import React from "react";
 import { sample } from "../../utils";
 import { WORDS } from "../../data";
 import GuessInput from "../GuessInput";
-import GuessTracker from "../GuessTracker/GuessTracker";
+import Guess from "../Guess";
+import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 
 // Pick a random word on every page load.
 const answer = sample(WORDS);
@@ -11,19 +12,39 @@ const answer = sample(WORDS);
 console.info({ answer });
 
 function Game() {
-  const [guesses, setGuesses] = React.useState([]);
+  const [guesses, setGuesses] = React.useState(
+    createArrayWithEmptyStrings(NUM_OF_GUESSES_ALLOWED)
+  );
+
+  const [nbrOfGuesses, setNbrOfGuesses] = React.useState(0);
 
   function handleAddGuess(guess) {
-    const nextGuesses = [...guesses, guess];
+    if (nbrOfGuesses >= NUM_OF_GUESSES_ALLOWED) return;
+    const nextGuesses = [...guesses];
+    nextGuesses[nbrOfGuesses].label = guess;
     setGuesses(nextGuesses);
+    setNbrOfGuesses(nbrOfGuesses + 1);
   }
 
   return (
     <>
-      <GuessTracker guesses={guesses} />
+      <div className="guess-results">
+        {guesses.map((guess, index) => (
+          <Guess key={index} word={guess.label} />
+        ))}
+      </div>
       <GuessInput handleAddGuess={handleAddGuess} />
     </>
   );
+}
+
+function createArrayWithEmptyStrings(length) {
+  const array = [];
+  for (let i = 0; i < length; i++) {
+    let entry = { id: Math.random(), label: "" };
+    array.push(entry);
+  }
+  return array;
 }
 
 export default Game;

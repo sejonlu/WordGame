@@ -8,7 +8,7 @@ function GuessInput({ handleAddGuess }) {
 
     if (/^[a-zA-Z]{5}$/.test(input) === false) return;
 
-    handleAddGuess({ id: Math.random(), guess: input });
+    handleAddGuess(input);
     setInput(""); // reset input
   }
 
