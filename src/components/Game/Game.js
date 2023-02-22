@@ -6,6 +6,7 @@ import GuessInput from "../GuessInput";
 import Guess from "../Guess";
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 import { checkGuess } from "../../game-helpers";
+import Banner from "../Banner";
 
 // Pick a random word on every page load.
 const answer = sample(WORDS);
@@ -16,20 +17,30 @@ function Game() {
   const [guesses, setGuesses] = React.useState(
     createArrayWithEmptyStrings(NUM_OF_GUESSES_ALLOWED)
   );
-
   const [nbrOfGuesses, setNbrOfGuesses] = React.useState(0);
+  const [gameOver, setGameOver] = React.useState(false);
+  const [didWin, setDidWin] = React.useState(false);
 
   console.log("guesses", guesses);
 
   function handleAddGuess(guess) {
     if (nbrOfGuesses >= NUM_OF_GUESSES_ALLOWED) return;
     const nextGuesses = [...guesses];
+    const result = checkGuess(guess, answer);
     nextGuesses[nbrOfGuesses] = {
       id: Math.random(),
-      result: checkGuess(guess, answer),
+      result: result,
     };
     setGuesses(nextGuesses);
     setNbrOfGuesses(nbrOfGuesses + 1);
+
+    const didWin = result.every((obj) => obj.status === "correct");
+    if (didWin) {
+      setDidWin(true);
+      setGameOver(true);
+    } else if (nbrOfGuesses + 1 >= NUM_OF_GUESSES_ALLOWED) {
+      setGameOver(true);
+    }
   }
 
   return (
@@ -40,6 +51,13 @@ function Game() {
         ))}
       </div>
       <GuessInput handleAddGuess={handleAddGuess} />
+      {gameOver && (
+        <Banner
+          didWin={didWin}
+          nbrGuesses={nbrOfGuesses}
+          correctAnswer={answer}
+        />
+      )}
     </>
   );
 }
